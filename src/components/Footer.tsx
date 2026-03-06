@@ -2,7 +2,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-20 border-t border-(--line) px-4 pb-14 pt-10 text-(--sea-ink-soft)">
+    <footer className="mt-20 border-t border-(--border-base) px-4 pb-14 pt-10 text-(--sea-ink-soft)">
       <div className="page-wrap flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
         <p className="m-0 text-sm">
           &copy; {year} Jiseeeh. All rights reserved.
@@ -14,7 +14,7 @@ export default function Footer() {
           href="https://github.com/stackovermaw"
           target="_blank"
           rel="noreferrer"
-          className="rounded-xl p-2 text-(--sea-ink-soft)transition hover:bg-(--link-bg-hover) `hover:text-(--sea-ink)"
+          className="rounded-xl p-2 text-(--sea-ink-soft) transition hover:bg-(--link-bg-hover) `hover:text-(--sea-ink)"
         >
           <span className="sr-only">Go to the author's github</span>
           <svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32">
