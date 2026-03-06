@@ -11,7 +11,7 @@ export default function Header() {
   const now = new Date();
   const [isRefreshing, setIsRefreshing] = useState(false);
   return (
-    <header className="sticky top-0 z-50  p-5 border-b border-(--border-base) flex justify-between">
+    <header className="sticky top-0 z-50 bg--background p-5 border-b border-(--border-base) flex justify-between">
       <section>
         <TypographyH3>Lotto Results</TypographyH3>
         <span>
