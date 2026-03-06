@@ -27,7 +27,7 @@ export default function Header() {
 
       <section className="flex items-center gap-2">
         {navigator.onLine ? (
-          <Wifi className="text-green-500" size={18} />
+          <Wifi className="text-(--lagoon)" size={18} />
         ) : (
           <WifiOff size={18} />
         )}
