@@ -1,29 +1,87 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import { Card, CardDescription, CardHeader } from "#/components/ui/card";
 import { ScrollArea, ScrollBar } from "#/components/ui/scroll-area";
+import { fetchResults } from "#/features/results/lib/fetch-results";
+import { formatDate } from "#/features/results/lib/format-date";
+import { LOCALE, LOCALE_OPTIONS } from "#/lib/constants";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 export const Route = createFileRoute("/")({ component: App });
 
 function App() {
-  const today = new Date();
+  const [date, setDate] = useState<Date | null>(null);
+  const [game, setGame] = useState("all");
 
-  const machineDate = today.toISOString().split("T")[0];
+  useEffect(() => {
+    setDate(new Date());
+  }, []);
 
-  const displayDate = today.toLocaleDateString("en-PH", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
+  const machineDate = useMemo(() => {
+    if (!date) return "";
+    return date.toISOString().split("T")[0];
+  }, [date]);
+
+  const displayDate = useMemo(() => {
+    if (!date) return "";
+
+    return date.toLocaleDateString(LOCALE, {
+      ...LOCALE_OPTIONS,
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+  }, [date]);
+
+  const today = useMemo(() => {
+    return new Date().toDateString();
+  }, []);
+
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["lottoResults", displayDate],
+    queryFn: async () => {
+      const formattedDate = formatDate(displayDate);
+      const results = await fetchResults(formattedDate);
+      return results;
+    },
   });
+
+  const handleGameChange = (game: string) => {
+    setGame(game);
+  };
+
+  const handlePrevDay = () => {
+    if (!date) return;
+
+    const newDate = new Date(date);
+    newDate.setDate(date.getDate() - 1);
+    setDate(newDate);
+  };
+
+  const handleNextDay = () => {
+    if (!date) return;
+
+    const newDate = new Date(date);
+    newDate.setDate(date.getDate() + 1);
+    setDate(newDate);
+  };
+
+  if (!date) {
+    return null;
+  }
+
+  console.log({ data, error });
 
   return (
     <main className="page-wrap px-4 pb-8 pt-14">
       <Card className="flex items-center">
         <CardDescription className="flex items-center gap-3">
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" onClick={handlePrevDay}>
             <ChevronLeft size={18} />
           </Button>
 
@@ -34,11 +92,16 @@ function App() {
             >
               <Calendar size={18} className="mr-1" />
               {displayDate}
-              <Badge>Today</Badge>
+              {date.toDateString() === today && <Badge>Today</Badge>}
             </time>
           </div>
 
-          <Button variant="ghost" size="icon">
+          <Button
+            variant="ghost"
+            size="icon"
+            disabled={date.toDateString() === today}
+            onClick={handleNextDay}
+          >
             <ChevronRight size={18} />
           </Button>
         </CardDescription>
@@ -46,15 +109,42 @@ function App() {
 
       <ScrollArea className="w-full my-4 rounded-md border whitespace-nowrap">
         <div className="flex space-x-4 p-4">
-          <Button>All Games</Button>
-          <Button variant="outline">6/58 Ultra</Button>
-          <Button variant="outline">6/49 Super</Button>
-          <Button variant="outline">6/42 Lotto</Button>
-          <Button variant="outline">6D</Button>
-          <Button variant="outline">4D</Button>
-          <Button variant="outline">3D</Button>
-          <Button variant="outline">2D</Button>
-          <Button variant="outline">STL Swertres</Button>
+          <Button
+            variant={game === "all" ? "default" : "outline"}
+            onClick={() => handleGameChange("all")}
+          >
+            All Games
+          </Button>
+          <Button
+            variant={game === "6/58" ? "default" : "outline"}
+            onClick={() => handleGameChange("6/58")}
+          >
+            6/58 Ultra Lotto
+          </Button>
+          <Button
+            variant={game === "6/55" ? "default" : "outline"}
+            onClick={() => handleGameChange("6/55")}
+          >
+            6/55 Grand Lotto
+          </Button>
+          <Button
+            variant={game === "6/49" ? "default" : "outline"}
+            onClick={() => handleGameChange("6/49")}
+          >
+            6/49 Super Lotto
+          </Button>
+          <Button
+            variant={game === "6/45" ? "default" : "outline"}
+            onClick={() => handleGameChange("6/45")}
+          >
+            6/45 Mega Lotto
+          </Button>
+          <Button
+            variant={game === "6/42" ? "default" : "outline"}
+            onClick={() => handleGameChange("6/42")}
+          >
+            6/42 Lotto
+          </Button>
         </div>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
