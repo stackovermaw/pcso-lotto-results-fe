@@ -6,6 +6,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { Toaster } from "sileo";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import PostHogProvider from "../integrations/posthog/provider";
@@ -31,7 +32,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "TanStack Start Starter",
+        title: "PCSO Lotto Results Scraper",
       },
     ],
     links: [
@@ -54,6 +55,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body className="font-sans antialiased wrap-anywhere selection:bg-[rgba(79,184,178,0.24)]">
         <PostHogProvider>
           <TanStackQueryProvider>
+            <Toaster
+              position="bottom-center"
+              options={{
+                styles: {
+                  description: "text-black/80",
+                },
+              }}
+            />
             <Header />
             {children}
             <Footer />
