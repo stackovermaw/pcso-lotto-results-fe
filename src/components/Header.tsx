@@ -36,7 +36,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg--background p-5 border-b border-(--border-base) flex justify-between">
+    <header className="sticky top-0 z-50 bg-background p-5 border-b border-(--border-base) flex justify-between">
       <section>
         <TypographyH3>Lotto Results</TypographyH3>
         <span>{displayDate}</span>
