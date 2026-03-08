@@ -1,4 +1,5 @@
-const ROOT_URL = "http://66.181.46.16/api/v2/results/";
+const ROOT_URL =
+  "https://server-production-2894.up.railway.app/api/v2/results/";
 
 export const fetchResults = async (
   date: string,
