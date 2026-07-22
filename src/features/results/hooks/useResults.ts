@@ -4,6 +4,7 @@ import { useCallback, useMemo } from "react";
 import { fetchResults } from "#/features/results/lib/fetch-results";
 import { formatDate } from "#/features/results/lib/format-date";
 import { KNOWN_GAMES } from "#/features/results/lib/game-config";
+import { baseGameName } from "#/features/results/lib/result-utils";
 
 export function useResults(displayDate: string, activeGame: string) {
   const { data, error, isLoading, refetch } = useQuery({
@@ -14,9 +15,16 @@ export function useResults(displayDate: string, activeGame: string) {
     },
   });
 
+  // ? a known game can come back as several city entries, so we swap it for
+  // ? whichever ones the api actually returned and keep the rest as is
   const expectedGames = useMemo(() => {
-    return [...KNOWN_GAMES];
-  }, []);
+    const names = Object.keys(data?.results ?? {});
+
+    return KNOWN_GAMES.flatMap((game) => {
+      const cityVariants = names.filter((name) => baseGameName(name) === game);
+      return cityVariants.length > 0 ? cityVariants : [game];
+    });
+  }, [data]);
 
   const filteredGames = useCallback(
     (game: string) => {

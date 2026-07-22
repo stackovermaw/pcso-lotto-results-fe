@@ -8,6 +8,7 @@ import {
   ResultCard,
   SkeletonCard,
 } from "#/features/results/components";
+import { useCopyBuffer } from "#/features/results/hooks/useCopyBuffer";
 import { useResults } from "#/features/results/hooks/useResults";
 import { LOCALE, LOCALE_OPTIONS } from "#/lib/constants";
 
@@ -41,6 +42,8 @@ function App() {
   const { data, error, isLoading, filteredGames, missingGames } =
     useResults(displayDate, game);
 
+  const { copied, clearAll } = useCopyBuffer();
+
   const handlePrevDay = () => {
     if (!date) return;
     const next = new Date(date);
@@ -70,6 +73,21 @@ function App() {
       />
 
       <GameFilter activeGame={game} onChange={setGame} />
+
+      {copied.length > 0 && (
+        <p className="text-sm text-muted-foreground flex items-center gap-2">
+          <span>
+            {copied.length} {copied.length === 1 ? "result" : "results"} copied
+          </span>
+          <button
+            type="button"
+            onClick={clearAll}
+            className="underline underline-offset-2 hover:text-foreground"
+          >
+            Clear
+          </button>
+        </p>
+      )}
 
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
         {visibleGames.map((name) => {

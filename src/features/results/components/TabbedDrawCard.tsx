@@ -15,7 +15,7 @@ export function TabbedDrawCard({
   const defaultTab = draws[0]?.[0] ?? "";
 
   return (
-    <GameCardShell name={name}>
+    <GameCardShell name={name} entry={entry}>
       <Tabs defaultValue={defaultTab}>
         <TabsList className="w-full mt-1" variant="line">
           {draws.map(([time]) => (
