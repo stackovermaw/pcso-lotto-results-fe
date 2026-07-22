@@ -1,7 +1,10 @@
 import { Clock } from "lucide-react";
 import { GameCardShell } from "#/features/results/components/GameCardShell";
 import { BallRow } from "#/features/results/components/LottoBall";
-import { isPrizeKey } from "#/features/results/lib/result-utils";
+import {
+  isPrizeKey,
+  MAJOR_DRAW_TIME,
+} from "#/features/results/lib/result-utils";
 import type { GameEntry } from "#/features/results/types";
 
 export function MajorLottoCard({
@@ -14,10 +17,10 @@ export function MajorLottoCard({
   const prizeRows = Object.entries(entry).filter(([k]) => isPrizeKey(k));
 
   return (
-    <GameCardShell name={name}>
+    <GameCardShell name={name} entry={entry}>
       <div className="text-sm text-muted-foreground flex items-center gap-2 mt-1">
         <Clock size={16} />
-        Drawn at 9:00 PM
+        Drawn at {MAJOR_DRAW_TIME}
       </div>
       <BallRow combination={entry["Winning Combination"]} />
       <hr className="my-3" />

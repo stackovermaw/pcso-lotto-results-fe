@@ -9,7 +9,7 @@ export function FourDCard({ name, entry }: { name: string; entry: GameEntry }) {
   const combination = drawTimeKey ? entry[drawTimeKey] : null;
 
   return (
-    <GameCardShell name={name}>
+    <GameCardShell name={name} entry={entry}>
       {drawTimeKey && (
         <div className="text-sm text-muted-foreground flex items-center gap-2 mt-1">
           <Clock size={16} />
